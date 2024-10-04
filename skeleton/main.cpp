@@ -11,6 +11,7 @@
 #include <iostream>
 
 #include "Particle.h"
+#include "Proyectil.h"
 
 std::string display_text = "This is a test";
 
@@ -32,7 +33,7 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-Particle* particle = NULL;
+Proyectil* proyectil = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -57,8 +58,6 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-
-	particle = new Particle({ 0,0,0 }, { 0,0,0 }, {10,0,0}, 0.998);
 	}
 
 
@@ -71,7 +70,13 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	particle->integrate(t);
+	if (proyectil != nullptr) {
+		proyectil->integrate(t);
+		if (proyectil->GetPos().y < 0) {
+			delete proyectil;
+			proyectil = nullptr;
+		}
+	}
 }
 
 // Function to clean data
@@ -79,9 +84,10 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
-
-	delete particle;
-
+	if (proyectil != nullptr) {
+		delete proyectil;
+		proyectil = nullptr;
+	}
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
 	gDispatcher->release();
@@ -103,6 +109,12 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 	//case 'B': break;
 	//case ' ':	break;
+	case 'B': {
+		if (proyectil == nullptr) {
+			proyectil = new Proyectil({0,10,0}, {330,0,0}, 5);
+		}
+		break;
+	}
 	case ' ':
 	{
 		break;
