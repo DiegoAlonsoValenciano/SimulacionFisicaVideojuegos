@@ -12,6 +12,7 @@
 
 #include "Particle.h"
 #include "Proyectil.h"
+#include "ParticleGenerator.h"
 
 std::string display_text = "This is a test";
 
@@ -34,6 +35,7 @@ PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
 Proyectil* proyectil = nullptr;
+ParticleGenerator* generador = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -58,6 +60,8 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
+
+	generador = new ParticleGenerator({ 0,0,0 }, 100);
 	}
 
 
@@ -77,6 +81,7 @@ void stepPhysics(bool interactive, double t)
 			proyectil = nullptr;
 		}
 	}
+	generador->update(t);
 }
 
 // Function to clean data
@@ -111,7 +116,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	//case ' ':	break;
 	case 'B': {
 		if (proyectil == nullptr) {
-			proyectil = new Proyectil({0,10,0}, {330,0,0}, 5);
+			proyectil = new Proyectil(camera.p, {-10,0,-10}, 10);
 		}
 		break;
 	}

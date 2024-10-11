@@ -16,9 +16,12 @@ public:
 	Particle(Vector3 Pos, Vector3 Vel);
 	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel);
 	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel, double d);
+	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel, double d, float tam);
+	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel, double d, int tv);
+	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel, double d, float tam, int tv);
 	~Particle();
 
-	virtual void integrate(double t);
+	virtual bool integrate(double t);
 	void setColor(Vector4 color);
 	Vector3 GetPos();
 protected:
@@ -27,5 +30,7 @@ protected:
 	RenderItem* renderItem;
 	Vector3 acel;
 	double damping;
+	int tiempoVida;
+	int tiempo;
 };
 
