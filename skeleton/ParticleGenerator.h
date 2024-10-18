@@ -10,11 +10,17 @@ class ParticleGenerator
 {
 public:
 	ParticleGenerator(Vector3 fuente, int rango);
-	void update(double t);
-private:
+	~ParticleGenerator();
+	virtual void update(double t) = 0;
+protected:
 	Vector3 fuente;
 	list<Particle*> lista;
 	int rango;
 	mt19937_64 randomGenerator;
+	float x;
+	float y;
+	float z;
+	float tv;
+	virtual void generateRandom() = 0;
 };
 

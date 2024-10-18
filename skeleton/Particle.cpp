@@ -1,43 +1,31 @@
 #include "Particle.h"
 
 Particle::Particle()
-	:vel({0,0,0}), pose({0,0,0}), acel({0,0,0}), damping(0.998), tiempoVida(0), tiempo(5000)
+	:vel({0,0,0}), pose({0,0,0}), acel({0,0,0}), damping(0.998), tiempoVida(0), tiempo(5000), euler(true)
 {
 	renderItem = new RenderItem(CreateShape(PxSphereGeometry(1.0f)), &pose, { 1.0, 0.0, 0.0, 1.0 });
 }
 
 Particle::Particle(Vector3 Pos, Vector3 Vel)
-	:vel(Vel), pose(Pos), acel({0,0,0}), damping(0.998), tiempoVida(0), tiempo(5000)
+	:vel(Vel), pose(Pos), acel({0,0,0}), damping(0.998), tiempoVida(0), tiempo(5000), euler(true)
 {
 	renderItem = new RenderItem(CreateShape(PxSphereGeometry(1.0f)), &pose, { 1.0, 0.0, 0.0, 1.0 });
 }
 
 Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel)
-	:vel(Vel), pose(Pos), acel(Acel), damping(0.998), tiempoVida(0), tiempo(5000)
+	:vel(Vel), pose(Pos), acel(Acel), damping(0.998), tiempoVida(0), tiempo(5000), euler(true)
 {
 	renderItem = new RenderItem(CreateShape(PxSphereGeometry(1.0f)), &pose, { 1.0, 0.0, 0.0, 1.0 });
 }
 
 Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel, double d)
-	:vel(Vel), pose(Pos), acel(Acel), damping(d), tiempoVida(0), tiempo(5000)
+	:vel(Vel), pose(Pos), acel(Acel), damping(d), tiempoVida(0), tiempo(5000), euler(true)
 {
 	renderItem = new RenderItem(CreateShape(PxSphereGeometry(1.0f)), &pose, { 1.0, 0.0, 0.0, 1.0 });
 }
 
 Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel, double d, float tam)
-	:vel(Vel), pose(Pos), acel(Acel), damping(d), tiempoVida(0), tiempo(5000)
-{
-	renderItem = new RenderItem(CreateShape(PxSphereGeometry(tam)), &pose, { 1.0, 0.0, 0.0, 1.0 });
-}
-
-Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel, double d, int tv)
-	:vel(Vel), pose(Pos), acel(Acel), damping(d), tiempoVida(0), tiempo(tv)
-{
-	renderItem = new RenderItem(CreateShape(PxSphereGeometry(1.0f)), &pose, { 1.0, 0.0, 0.0, 1.0 });
-}
-
-Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel, double d, float tam, int tv)
-	:vel(Vel), pose(Pos), acel(Acel), damping(d), tiempoVida(0), tiempo(tv)
+	:vel(Vel), pose(Pos), acel(Acel), damping(d), tiempoVida(0), tiempo(5000), euler(true)
 {
 	renderItem = new RenderItem(CreateShape(PxSphereGeometry(tam)), &pose, { 1.0, 0.0, 0.0, 1.0 });
 }
@@ -47,9 +35,16 @@ Particle::~Particle() {
 }
 
 bool Particle::integrate(double t) {
-	vel = vel + acel * t;
-	vel = vel * pow(damping, t);
-	pose.p = pose.p + vel * t;
+	if (euler) {
+		vel = vel + acel * t;
+		vel = vel * pow(damping, t);
+		pose.p = pose.p + vel * t;
+	}
+	else {
+		vel = vel + acel * t;
+		vel = vel * pow(damping, t);
+		pose.p = pose.p + vel * t + 0.5 * acel * pow(t, 2);
+	}
 	tiempoVida++;
 	if (tiempoVida > tiempo) {
 		return true;
@@ -61,6 +56,14 @@ bool Particle::integrate(double t) {
 
 void Particle::setColor(Vector4 color) {
 	renderItem->color = color;
+}
+
+void Particle::setTiempoVida(float tv) {
+	tiempo = tv;
+}
+
+void Particle::setEuler(bool elr) {
+	euler = elr;
 }
 
 Vector3 Particle::GetPos() {

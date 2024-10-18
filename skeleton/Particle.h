@@ -17,12 +17,12 @@ public:
 	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel);
 	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel, double d);
 	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel, double d, float tam);
-	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel, double d, int tv);
-	Particle(Vector3 Pos, Vector3 Vel, Vector3 Acel, double d, float tam, int tv);
 	~Particle();
 
 	virtual bool integrate(double t);
 	void setColor(Vector4 color);
+	void setTiempoVida(float tv);
+	void setEuler(bool elr);
 	Vector3 GetPos();
 protected:
 	Vector3 vel;
@@ -32,5 +32,6 @@ protected:
 	double damping;
 	int tiempoVida;
 	int tiempo;
+	bool euler;
 };
 

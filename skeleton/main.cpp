@@ -13,6 +13,9 @@
 #include "Particle.h"
 #include "Proyectil.h"
 #include "ParticleGenerator.h"
+#include "Lluvia.h"
+#include "Niebla.h"
+#include "Party.h"
 
 std::string display_text = "This is a test";
 
@@ -35,7 +38,9 @@ PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
 Proyectil* proyectil = nullptr;
-ParticleGenerator* generador = nullptr;
+Lluvia* lluvia = nullptr;
+Niebla* niebla = nullptr;
+Party* party = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -60,8 +65,6 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-
-	generador = new ParticleGenerator({ 0,0,0 }, 100);
 	}
 
 
@@ -81,7 +84,16 @@ void stepPhysics(bool interactive, double t)
 			proyectil = nullptr;
 		}
 	}
-	generador->update(t);
+	if (lluvia != nullptr) {
+		lluvia->update(t);
+	}
+	if (niebla != nullptr) {
+		niebla->update(t);
+	}
+	if (party != nullptr) {
+		party->update(t);
+	}
+	
 }
 
 // Function to clean data
@@ -89,9 +101,22 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
+	
 	if (proyectil != nullptr) {
 		delete proyectil;
 		proyectil = nullptr;
+	}
+	if (lluvia != nullptr) {
+		delete lluvia;
+		lluvia = nullptr;
+	}
+	if (niebla != nullptr) {
+		delete niebla;
+		niebla = nullptr;
+	}
+	if (party != nullptr) {
+		delete party;
+		party = nullptr;
 	}
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
@@ -117,6 +142,48 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'B': {
 		if (proyectil == nullptr) {
 			proyectil = new Proyectil(camera.p, {-10,0,-10}, 10);
+		}
+		break;
+	}
+	case 'L': {
+		if (lluvia == nullptr) {
+			lluvia = new Lluvia({ 0,100,0 }, 10);
+		}
+		if (niebla != nullptr) {
+			delete niebla;
+			niebla = nullptr;
+		}
+		if (party != nullptr) {
+			delete party;
+			party = nullptr;
+		}
+		break;
+	}
+	case 'N': {
+		if (niebla == nullptr) {
+			niebla = new Niebla({ 0,50,0 }, 10);
+		}
+		if (lluvia != nullptr) {
+			delete lluvia;
+			lluvia = nullptr;
+		}
+		if (party != nullptr) {
+			delete party;
+			party = nullptr;
+		}
+		break;
+	}
+	case 'P': {
+		if (party == nullptr) {
+			party = new Party({ 0,0,0 }, 100);
+		}
+		if (lluvia != nullptr) {
+			delete lluvia;
+			lluvia = nullptr;
+		}
+		if (niebla != nullptr) {
+			delete niebla;
+			niebla = nullptr;
 		}
 		break;
 	}
