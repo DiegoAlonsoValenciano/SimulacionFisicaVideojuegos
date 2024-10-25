@@ -1,20 +1,25 @@
 #include "Lluvia.h"
 
-Lluvia::Lluvia(Vector3 fuente, float radio)
-	:ParticleGenerator(fuente, 1000), radio(radio)
+Lluvia::Lluvia(Vector3 fuente, float radio, ParticleForceRegister* r)
+	:ParticleGenerator(fuente, 1000, r), radio(radio)
 {}
 
 void Lluvia::update(double t) {
 	generateRandom();
 
-	Particle* particula = new Particle({fx,fuente.y,fz}, {x,y,z},{0,0,0},1,0.3);
+	Particle* particula = new Particle({fx,fuente.y,fz}, {x,y,z}, 0.003,{0,0,0},1,0.3);
 	particula->setColor({ 0,0,1,1 });
 	//particula->setTiempoVida(tv);
 	lista.push_back(particula);
 
+	for (auto it = fuerzas.begin(); it != fuerzas.end(); it++) {
+		registro->Registrar((*it), particula);
+	}
+
 	for (auto it = lista.begin(); it != lista.end();) {
 		bool dead = (*it)->integrate(t);
 		if (dead || ((*it)->GetPos() - fuente).magnitude() > rango) {
+			registro->LiberarParticula((*it));
 			delete(*it);
 			it = lista.erase(it);
 		}

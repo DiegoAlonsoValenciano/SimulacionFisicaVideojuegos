@@ -1,7 +1,7 @@
 #include "Proyectil.h"
 
-Proyectil::Proyectil(Vector3 Pos, Vector3 Vel, int m)
-	:Particle(Pos, Vel, { 0,-9.8,0 }, 1), masa(m)
+Proyectil::Proyectil(Vector3 Pos, Vector3 Vel, double m)
+	:Particle(Pos, Vel, m, { 0,-9.8,0 }, 1)
 {
 	velS = vel.getNormalized() * 25;
 	masaS = masa * (pow(vel.magnitude()/velS.magnitude(),2));
@@ -9,6 +9,8 @@ Proyectil::Proyectil(Vector3 Pos, Vector3 Vel, int m)
 }
 
 bool Proyectil::integrate(double t) {
+
+	acelS = acFuerza / masaS;
 	velS = velS + acelS * t;
 	velS = velS * pow(damping, t);
 	pose.p = pose.p + velS * t + 0.5*acelS*pow(t,2);
@@ -19,4 +21,5 @@ bool Proyectil::integrate(double t) {
 	else {
 		return false;
 	}
+	acFuerza = Vector3({ 0,0,0 });
 }

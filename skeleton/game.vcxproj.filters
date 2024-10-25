@@ -17,6 +17,9 @@
     <ClCompile Include="Lluvia.cpp" />
     <ClCompile Include="Niebla.cpp" />
     <ClCompile Include="Party.cpp" />
+    <ClCompile Include="ForceGenerator.cpp" />
+    <ClCompile Include="FuerzaGravedad.cpp" />
+    <ClCompile Include="ParticleForceRegister.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -35,6 +38,9 @@
     <ClInclude Include="Lluvia.h" />
     <ClInclude Include="Niebla.h" />
     <ClInclude Include="Party.h" />
+    <ClInclude Include="ForceGenerator.h" />
+    <ClInclude Include="FuerzaGravedad.h" />
+    <ClInclude Include="ParticleForceRegister.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

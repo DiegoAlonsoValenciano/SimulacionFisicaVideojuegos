@@ -5,11 +5,10 @@
 class Proyectil:public Particle
 {
 public:
-	Proyectil(Vector3 Pos, Vector3 Vel, int m);
+	Proyectil(Vector3 Pos, Vector3 Vel, double m);
 
 	virtual bool integrate(double t) override;
 protected:
-	int masa;
 	Vector3 velS;
 	int masaS;
 	Vector3 acelS;

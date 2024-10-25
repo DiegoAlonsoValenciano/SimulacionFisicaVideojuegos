@@ -1,20 +1,25 @@
 #include "Niebla.h"
 
-Niebla::Niebla(Vector3 fuente, float radio)
-	:ParticleGenerator(fuente, 1000), radio(radio)
+Niebla::Niebla(Vector3 fuente, float radio, ParticleForceRegister* r)
+	:ParticleGenerator(fuente, 1000, r), radio(radio)
 {}
 
 void Niebla::update(double t) {
 	generateRandom();
 
-	Particle* particula = new Particle({ fx,fy,fz }, { x,y,z }, { 0,0,0 }, 1, 0.3);
+	Particle* particula = new Particle({ fx,fy,fz }, { x,y,z }, 0.001, { 0,0,0 }, 1, 0.3);
 	particula->setColor({ 0.7,0.7,0.7,1 });
 	particula->setTiempoVida(tv);
 	lista.push_back(particula);
 
+	for (auto it = fuerzas.begin(); it != fuerzas.end(); it++) {
+		registro->Registrar((*it), particula);
+	}
+
 	for (auto it = lista.begin(); it != lista.end();) {
 		bool dead = (*it)->integrate(t);
 		if (dead || ((*it)->GetPos() - fuente).magnitude() > rango) {
+			registro->LiberarParticula((*it));
 			delete(*it);
 			it = lista.erase(it);
 		}

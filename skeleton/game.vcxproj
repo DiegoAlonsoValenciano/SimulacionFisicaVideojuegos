@@ -254,10 +254,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
+    <ClCompile Include="ForceGenerator.cpp" />
+    <ClCompile Include="FuerzaGravedad.cpp" />
     <ClCompile Include="Lluvia.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Niebla.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleForceRegister.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="Party.cpp" />
     <ClCompile Include="Proyectil.cpp" />
@@ -269,9 +272,12 @@
   <ItemGroup>
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="core.hpp" />
+    <ClInclude Include="ForceGenerator.h" />
+    <ClInclude Include="FuerzaGravedad.h" />
     <ClInclude Include="Lluvia.h" />
     <ClInclude Include="Niebla.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleForceRegister.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="Party.h" />
     <ClInclude Include="Proyectil.h" />

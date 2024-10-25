@@ -3,6 +3,7 @@
 #include <PxPhysicsAPI.h>
 
 #include <vector>
+#include <map>
 
 #include "core.hpp"
 #include "RenderUtils.hpp"
@@ -16,6 +17,9 @@
 #include "Lluvia.h"
 #include "Niebla.h"
 #include "Party.h"
+#include "ForceGenerator.h"
+#include "ParticleForceRegister.h"
+#include "FuerzaGravedad.h"
 
 std::string display_text = "This is a test";
 
@@ -41,6 +45,8 @@ Proyectil* proyectil = nullptr;
 Lluvia* lluvia = nullptr;
 Niebla* niebla = nullptr;
 Party* party = nullptr;
+ParticleForceRegister* registroF = nullptr;
+FuerzaGravedad* grav = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -65,6 +71,9 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
+
+	registroF = new ParticleForceRegister();
+	grav = new FuerzaGravedad();
 	}
 
 
@@ -147,7 +156,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	}
 	case 'L': {
 		if (lluvia == nullptr) {
-			lluvia = new Lluvia({ 0,100,0 }, 10);
+			lluvia = new Lluvia({ 0,100,0 }, 10,registroF);
 		}
 		if (niebla != nullptr) {
 			delete niebla;
@@ -161,7 +170,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	}
 	case 'N': {
 		if (niebla == nullptr) {
-			niebla = new Niebla({ 0,50,0 }, 10);
+			niebla = new Niebla({ 0,50,0 }, 10,registroF);
 		}
 		if (lluvia != nullptr) {
 			delete lluvia;
@@ -175,7 +184,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	}
 	case 'P': {
 		if (party == nullptr) {
-			party = new Party({ 0,0,0 }, 100);
+			party = new Party({ 0,0,0 }, 100,registroF);
 		}
 		if (lluvia != nullptr) {
 			delete lluvia;

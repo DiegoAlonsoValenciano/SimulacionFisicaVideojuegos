@@ -1,7 +1,7 @@
 #include "Party.h"
 
-Party::Party(Vector3 fuente, float radio)
-	:ParticleGenerator(fuente, radio)
+Party::Party(Vector3 fuente, float radio, ParticleForceRegister* r)
+	:ParticleGenerator(fuente, radio, r)
 {
 
 }
@@ -9,15 +9,20 @@ Party::Party(Vector3 fuente, float radio)
 void Party::update(double t) {
 	generateRandom();
 
-	Particle* particula = new Particle(fuente, { x,y,z });
+	Particle* particula = new Particle(fuente, { x,y,z },0.0001);
 	particula->setTiempoVida(tv);
 	lista.push_back(particula);
+
+	for (auto it = fuerzas.begin(); it != fuerzas.end(); it++) {
+		registro->Registrar((*it), particula);
+	}
 
 	for (auto it = lista.begin(); it != lista.end();) {
 		generateRandom();
 		(*it)->setColor({ r,g,b,1 });
 		bool dead = (*it)->integrate(t);
 		if (dead || ((*it)->GetPos() - fuente).magnitude() > rango) {
+			registro->LiberarParticula((*it));
 			delete(*it);
 			it = lista.erase(it);
 		}

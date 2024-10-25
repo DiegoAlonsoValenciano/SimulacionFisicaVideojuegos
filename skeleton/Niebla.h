@@ -5,7 +5,7 @@
 class Niebla : public ParticleGenerator
 {
 public:
-	Niebla(Vector3 fuente, float radio);
+	Niebla(Vector3 fuente, float radio, ParticleForceRegister* r);
 	virtual void update(double t) override;
 protected:
 	virtual void generateRandom() override;
