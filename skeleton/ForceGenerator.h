@@ -11,7 +11,7 @@
 class ForceGenerator
 {
 public:
-	ForceGenerator();
+	ForceGenerator(Vector3 f);
 	virtual void update(Particle* p) = 0;
 protected:
 	Vector3 fuerza;

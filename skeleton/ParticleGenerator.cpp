@@ -14,4 +14,18 @@ ParticleGenerator::~ParticleGenerator() {
 
 void ParticleGenerator::addFuerza(ForceGenerator* f) {
 	fuerzas.push_back(f);
+	for (auto it = lista.begin(); it != lista.end();it++) {
+		registro->Registrar(f, (*it));
+	}
+}
+
+void ParticleGenerator::quitarFuerza(ForceGenerator* f) {
+	for (auto it = fuerzas.begin(); it != fuerzas.end();) {
+		if ((*it) == f) {
+			it = fuerzas.erase(it);
+		}
+		else {
+			it++;
+		}
+	}
 }

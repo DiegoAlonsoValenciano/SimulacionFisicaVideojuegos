@@ -21,8 +21,9 @@
 #include "ParticleForceRegister.h"
 #include "FuerzaGravedad.h"
 
-std::string display_text = "This is a test";
+#include <map>
 
+std::string display_text = "This is a test";
 
 using namespace physx;
 
@@ -46,7 +47,6 @@ Lluvia* lluvia = nullptr;
 Niebla* niebla = nullptr;
 Party* party = nullptr;
 ParticleForceRegister* registroF = nullptr;
-FuerzaGravedad* grav = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -73,7 +73,6 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	registroF = new ParticleForceRegister();
-	grav = new FuerzaGravedad();
 	}
 
 
@@ -102,7 +101,7 @@ void stepPhysics(bool interactive, double t)
 	if (party != nullptr) {
 		party->update(t);
 	}
-	
+	registroF->update();
 }
 
 // Function to clean data

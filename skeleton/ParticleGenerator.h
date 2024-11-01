@@ -15,6 +15,7 @@ public:
 	~ParticleGenerator();
 	virtual void update(double t) = 0;
 	void addFuerza(ForceGenerator* f);
+	void quitarFuerza(ForceGenerator* f);
 protected:
 	Vector3 fuente;
 	list<Particle*> lista;
@@ -26,6 +27,6 @@ protected:
 	float tv;
 	virtual void generateRandom() = 0;
 	list<ForceGenerator*> fuerzas;
-	ParticleForceRegister *registro;
+	ParticleForceRegister* registro;
 };
 

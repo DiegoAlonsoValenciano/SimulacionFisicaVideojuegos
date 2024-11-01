@@ -8,8 +8,9 @@
 #include <math.h>
 #include <map>
 #include "Particle.h"
-#include "ParticleGenerator.h"
 #include "ForceGenerator.h"
+#include <list>
+#include <random>
 
 
 class ParticleForceRegister
@@ -21,6 +22,6 @@ public:
 	void LiberarParticula(Particle* p);
 	void update();
 protected:
-	multimap<ForceGenerator*, Particle*> fuerzas;
+	std::multimap <ForceGenerator*, Particle*> fuerzas;
 };
 

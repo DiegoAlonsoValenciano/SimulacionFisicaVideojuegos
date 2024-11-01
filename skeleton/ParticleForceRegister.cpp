@@ -17,9 +17,12 @@ void ParticleForceRegister::LiberarFuerza(ForceGenerator* f) {
 }
 
 void ParticleForceRegister::LiberarParticula(Particle* p) {
-	for (auto it = fuerzas.begin(); it != fuerzas.end(); it++) {
+	for (auto it = fuerzas.begin(); it != fuerzas.end();) {
 		if ((*it).second == p) {
 			it = fuerzas.erase(it);
+		}
+		else {
+			it++;
 		}
 	}
 }
