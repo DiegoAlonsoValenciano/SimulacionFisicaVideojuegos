@@ -7,9 +7,10 @@ Lluvia::Lluvia(Vector3 fuente, float radio, ParticleForceRegister* r)
 void Lluvia::update(double t) {
 	generateRandom();
 
-	Particle* particula = new Particle({fx,fuente.y,fz}, {x,y,z}, 0.003,{0,0,0},1,0.3);
+	Particle* particula = new Particle({fx,fuente.y,fz}, {x,y,z}, 1,{0,0,0},1,0.3);
 	particula->setColor({ 0,0,1,1 });
-	//particula->setTiempoVida(tv);
+	particula->setEuler(false);
+	particula->setTiempoVida(tv);
 	lista.push_back(particula);
 
 	for (auto it = fuerzas.begin(); it != fuerzas.end(); it++) {
@@ -31,9 +32,9 @@ void Lluvia::update(double t) {
 
 void Lluvia::generateRandom() {
 	x = uniform_real_distribution<float>(-1, 1)(randomGenerator);
-	y = -50;
+	y = 0;
 	z = uniform_real_distribution<float>(-1, 1)(randomGenerator);
 	fx = normal_distribution<float>(fuente.x-radio, fuente.x+radio)(randomGenerator);
 	fz = normal_distribution<float>(fuente.z-radio, fuente.z+radio)(randomGenerator);
-	//tv = uniform_real_distribution<float>(1000, 5000)(randomGenerator);
+	tv = uniform_real_distribution<float>(1000, 5000)(randomGenerator);
 }

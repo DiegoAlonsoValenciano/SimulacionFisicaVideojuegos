@@ -5,7 +5,6 @@ class FuerzaGravedad: public ForceGenerator
 {
 public:
 	FuerzaGravedad();
-	virtual void update(Particle* p) override;
-private:
+	virtual void update(Particle* p, double t) override;
 };
 

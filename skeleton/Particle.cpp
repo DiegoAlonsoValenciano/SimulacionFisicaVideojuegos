@@ -41,15 +41,15 @@ Particle::~Particle() {
 }
 
 bool Particle::integrate(double t) {
+	acel = acFuerza / masa;
 	if (euler) {
-		acel = acFuerza/masa;
 		vel = vel + acel * t;
 		vel = vel * pow(damping, t);
 		pose.p = pose.p + vel * t;
 	}
 	else {
-		vel = vel + acel * t;
-		vel = vel * pow(damping, t);
+		/*vel = vel + acel * t;
+		vel = vel * pow(damping, t);*/
 		pose.p = pose.p + vel * t + 0.5 * acel * pow(t, 2);
 	}
 	tiempoVida++;

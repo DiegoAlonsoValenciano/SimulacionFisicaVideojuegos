@@ -27,8 +27,8 @@ void ParticleForceRegister::LiberarParticula(Particle* p) {
 	}
 }
 
-void ParticleForceRegister::update() {
+void ParticleForceRegister::update(double t) {
 	for (auto it = fuerzas.begin(); it != fuerzas.end(); it++) {
-		(*it).first->update((*it).second);
+		(*it).first->update((*it).second, t);
 	}
 }

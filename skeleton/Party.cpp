@@ -9,7 +9,7 @@ Party::Party(Vector3 fuente, float radio, ParticleForceRegister* r)
 void Party::update(double t) {
 	generateRandom();
 
-	Particle* particula = new Particle(fuente, { x,y,z },0.0001);
+	Particle* particula = new Particle(fuente, { x,y,z },100000);
 	particula->setTiempoVida(tv);
 	lista.push_back(particula);
 

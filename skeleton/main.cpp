@@ -20,6 +20,10 @@
 #include "ForceGenerator.h"
 #include "ParticleForceRegister.h"
 #include "FuerzaGravedad.h"
+#include "WindForce.h"
+#include "FuerzaTorbellino.h"
+#include "FuerzaExplosion.h"
+#include "MuchasParticulas.h"
 
 #include <map>
 
@@ -47,6 +51,11 @@ Lluvia* lluvia = nullptr;
 Niebla* niebla = nullptr;
 Party* party = nullptr;
 ParticleForceRegister* registroF = nullptr;
+FuerzaGravedad* gravedad = nullptr;
+WindForce* viento = nullptr;
+FuerzaTorbellino* torbellino = nullptr;
+FuerzaExplosion* explosion = nullptr;
+MuchasParticulas* muchasParticulas = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -73,6 +82,12 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	registroF = new ParticleForceRegister();
+	gravedad = new FuerzaGravedad();
+	viento = new WindForce({ 20,0,20 },{0,0,0},100);
+	torbellino = new FuerzaTorbellino({ 0,0,0 }, 100);
+	explosion = new FuerzaExplosion({ 0,15,0 }, 50);
+	muchasParticulas = new MuchasParticulas({ 0,15,0 }, 100, registroF);
+	muchasParticulas->addFuerza(explosion);
 	}
 
 
@@ -92,6 +107,7 @@ void stepPhysics(bool interactive, double t)
 			proyectil = nullptr;
 		}
 	}
+	registroF->update(t);
 	if (lluvia != nullptr) {
 		lluvia->update(t);
 	}
@@ -101,7 +117,10 @@ void stepPhysics(bool interactive, double t)
 	if (party != nullptr) {
 		party->update(t);
 	}
-	registroF->update();
+	if (muchasParticulas != nullptr) {
+		muchasParticulas->update(t);
+	}
+	
 }
 
 // Function to clean data
@@ -126,6 +145,11 @@ void cleanupPhysics(bool interactive)
 		delete party;
 		party = nullptr;
 	}
+	if (muchasParticulas != nullptr) {
+		delete muchasParticulas;
+		muchasParticulas = nullptr;
+	}
+
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
 	gDispatcher->release();
@@ -156,6 +180,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'L': {
 		if (lluvia == nullptr) {
 			lluvia = new Lluvia({ 0,100,0 }, 10,registroF);
+			lluvia->addFuerza(gravedad);
+			lluvia->addFuerza(torbellino);
 		}
 		if (niebla != nullptr) {
 			delete niebla;
@@ -165,11 +191,16 @@ void keyPress(unsigned char key, const PxTransform& camera)
 			delete party;
 			party = nullptr;
 		}
+		if (muchasParticulas != nullptr) {
+			delete muchasParticulas;
+			muchasParticulas = nullptr;
+		}
 		break;
 	}
 	case 'N': {
 		if (niebla == nullptr) {
 			niebla = new Niebla({ 0,50,0 }, 10,registroF);
+			niebla->addFuerza(torbellino);
 		}
 		if (lluvia != nullptr) {
 			delete lluvia;
@@ -178,6 +209,10 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		if (party != nullptr) {
 			delete party;
 			party = nullptr;
+		}
+		if (muchasParticulas != nullptr) {
+			delete muchasParticulas;
+			muchasParticulas = nullptr;
 		}
 		break;
 	}
@@ -192,6 +227,30 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		if (niebla != nullptr) {
 			delete niebla;
 			niebla = nullptr;
+		}
+		if (muchasParticulas != nullptr) {
+			delete muchasParticulas;
+			muchasParticulas = nullptr;
+		}
+		break;
+	}
+	case 'E': {
+		if (muchasParticulas == nullptr) {
+			explosion = new FuerzaExplosion({ 0,15,0 }, 50);
+			muchasParticulas = new MuchasParticulas({ 0,15,0 }, 100, registroF);
+			muchasParticulas->addFuerza(explosion);
+		}
+		if (lluvia != nullptr) {
+			delete lluvia;
+			lluvia = nullptr;
+		}
+		if (niebla != nullptr) {
+			delete niebla;
+			niebla = nullptr;
+		}
+		if (party != nullptr) {
+			delete party;
+			party = nullptr;
 		}
 		break;
 	}

@@ -11,8 +11,8 @@ Proyectil::Proyectil(Vector3 Pos, Vector3 Vel, double m)
 bool Proyectil::integrate(double t) {
 
 	acelS = acFuerza / masaS;
-	velS = velS + acelS * t;
-	velS = velS * pow(damping, t);
+	/*velS = velS + acelS * t;
+	velS = velS * pow(damping, t);*/
 	pose.p = pose.p + velS * t + 0.5*acelS*pow(t,2);
 	tiempoVida++;
 	if (tiempoVida > 5000) {

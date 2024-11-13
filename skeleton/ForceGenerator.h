@@ -8,11 +8,13 @@
 #include <math.h>
 #include "Particle.h"
 
+using namespace std;
+
 class ForceGenerator
 {
 public:
-	ForceGenerator(Vector3 f);
-	virtual void update(Particle* p) = 0;
+	ForceGenerator();
+	virtual void update(Particle* p, double t) = 0;
 protected:
 	Vector3 fuerza;
 };

@@ -12,6 +12,7 @@
 #include <list>
 #include <random>
 
+using namespace std;
 
 class ParticleForceRegister
 {
@@ -20,8 +21,8 @@ public:
 	void Registrar(ForceGenerator* f, Particle* p);
 	void LiberarFuerza(ForceGenerator* f);
 	void LiberarParticula(Particle* p);
-	void update();
+	void update(double t);
 protected:
-	std::multimap <ForceGenerator*, Particle*> fuerzas;
+	multimap <ForceGenerator*, Particle*> fuerzas;
 };
 

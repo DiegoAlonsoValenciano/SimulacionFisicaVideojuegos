@@ -1,4 +1,4 @@
 #include "ForceGenerator.h"
 
-ForceGenerator::ForceGenerator(Vector3 f) : fuerza(f)
+ForceGenerator::ForceGenerator() : fuerza({0,0,0})
 {}

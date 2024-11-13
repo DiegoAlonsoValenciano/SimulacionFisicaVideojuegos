@@ -7,9 +7,10 @@ Niebla::Niebla(Vector3 fuente, float radio, ParticleForceRegister* r)
 void Niebla::update(double t) {
 	generateRandom();
 
-	Particle* particula = new Particle({ fx,fy,fz }, { x,y,z }, 0.001, { 0,0,0 }, 1, 0.3);
+	Particle* particula = new Particle({ fx,fy,fz }, { x,y,z }, 1, { 0,0,0 }, 1, 0.1);
 	particula->setColor({ 0.7,0.7,0.7,1 });
 	particula->setTiempoVida(tv);
+	particula->setEuler(false);
 	lista.push_back(particula);
 
 	for (auto it = fuerzas.begin(); it != fuerzas.end(); it++) {
