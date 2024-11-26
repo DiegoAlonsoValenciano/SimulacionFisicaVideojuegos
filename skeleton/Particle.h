@@ -27,6 +27,7 @@ public:
 	void updateForce(Vector3 plusForce);
 	Vector3 GetPos() const;
 	Vector3 GetVel() const;
+	double GetMasa() const;
 protected:
 	Vector3 vel;
 	physx::PxTransform pose; //A render item le pasaremos la direccion de este pose, para que actualice automaticamente

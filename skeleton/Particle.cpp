@@ -50,7 +50,7 @@ bool Particle::integrate(double t) {
 	else {
 		/*vel = vel + acel * t;
 		vel = vel * pow(damping, t);*/
-		pose.p = pose.p + vel * t + 0.5 * acel * pow(t, 2);
+		pose.p = pose.p + (vel * t + 0.5 * acel * pow(t, 2)) * pow(damping, t);
 	}
 	tiempoVida++;
 	if (tiempoVida > tiempo) {
@@ -84,4 +84,8 @@ Vector3 Particle::GetPos() const {
 
 Vector3 Particle::GetVel() const {
 	return vel;
+}
+
+double Particle::GetMasa() const {
+	return masa;
 }

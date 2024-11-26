@@ -8,6 +8,7 @@ MuchasParticulas::MuchasParticulas(Vector3 fuente, float radio, ParticleForceReg
 
 		Particle* particula = new Particle({x,y,z}, {0,0,0}, 5, {0,0,0}, 1, 0.5);
 		particula->setTiempoVida(tv);
+		particula->setEuler(false);
 		lista.push_back(particula);
 	}
 }

@@ -5,5 +5,5 @@ FuerzaGravedad::FuerzaGravedad() {
 }
 
 void FuerzaGravedad::update(Particle* p, double t) {
-	p->updateForce(fuerza);
+	p->updateForce(fuerza*p->GetMasa());
 }

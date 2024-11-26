@@ -24,6 +24,13 @@
     <ClCompile Include="FuerzaTorbellino.cpp" />
     <ClCompile Include="FuerzaExplosion.cpp" />
     <ClCompile Include="MuchasParticulas.cpp" />
+    <ClCompile Include="FuerzaMuelle.cpp" />
+    <ClCompile Include="FuerzaMuelleFijo.cpp" />
+    <ClCompile Include="FuerzaFlotacion.cpp" />
+    <ClCompile Include="FuerzaGomaElastica.cpp" />
+    <ClCompile Include="SolidoRigido.cpp" />
+    <ClCompile Include="GeneradorSolidoRigido.cpp" />
+    <ClCompile Include="SolidParty.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -49,6 +56,13 @@
     <ClInclude Include="FuerzaTorbellino.h" />
     <ClInclude Include="FuerzaExplosion.h" />
     <ClInclude Include="MuchasParticulas.h" />
+    <ClInclude Include="FuerzaMuelle.h" />
+    <ClInclude Include="FuerzaMuelleFijo.h" />
+    <ClInclude Include="FuerzaFlotacion.h" />
+    <ClInclude Include="FuerzaGomaElastica.h" />
+    <ClInclude Include="SolidoRigido.h" />
+    <ClInclude Include="GeneradorSolidoRigido.h" />
+    <ClInclude Include="SolidParty.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

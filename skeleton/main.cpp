@@ -24,6 +24,13 @@
 #include "FuerzaTorbellino.h"
 #include "FuerzaExplosion.h"
 #include "MuchasParticulas.h"
+#include "FuerzaMuelle.h"
+#include "FuerzaMuelleFijo.h"
+#include "FuerzaFlotacion.h"
+#include "FuerzaGomaElastica.h"
+#include "SolidoRigido.h"
+#include "GeneradorSolidoRigido.h"
+#include "SolidParty.h"
 
 #include <map>
 
@@ -56,6 +63,23 @@ WindForce* viento = nullptr;
 FuerzaTorbellino* torbellino = nullptr;
 FuerzaExplosion* explosion = nullptr;
 MuchasParticulas* muchasParticulas = nullptr;
+FuerzaMuelle* fuerzaMuelle1 = nullptr;
+FuerzaMuelle* fuerzaMuelle2 = nullptr;
+FuerzaMuelleFijo* fuerzaMuelleFijo = nullptr;
+FuerzaFlotacion* fuerzaFlotacion = nullptr;
+FuerzaGomaElastica* fuerzaGomaElastica1 = nullptr;
+FuerzaGomaElastica* fuerzaGomaElastica2 = nullptr;
+
+Particle* p1 = nullptr;
+Particle* p2 = nullptr;
+Particle* p3 = nullptr;
+Particle* p4 = nullptr;
+Particle* p5 = nullptr;
+Particle* p6 = nullptr;
+Particle* p7 = nullptr;
+Particle* p8 = nullptr;
+
+SolidParty* solidParty;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -86,8 +110,67 @@ void initPhysics(bool interactive)
 	viento = new WindForce({ 20,0,20 },{0,0,0},100);
 	torbellino = new FuerzaTorbellino({ 0,0,0 }, 100);
 	explosion = new FuerzaExplosion({ 0,15,0 }, 50);
-	muchasParticulas = new MuchasParticulas({ 0,15,0 }, 100, registroF);
-	muchasParticulas->addFuerza(explosion);
+
+	p1 = new Particle({ 30,0,20 }, { 0,0,10 }, 2);
+	p2 = new Particle({ -30,0,20 }, { 0,0,-10 }, 2);
+	p1->setEuler(false);
+	p2->setEuler(false);
+	p1->setColor({ 0.0,1.0,0.0,1.0 });
+	p2->setColor({ 0.0,1.0,0.0,1.0 });
+	fuerzaMuelle1 = new FuerzaMuelle(10, 10, p1);
+	fuerzaMuelle2 = new FuerzaMuelle(10, 10, p2);
+	registroF->Registrar(fuerzaMuelle1, p2);
+	registroF->Registrar(fuerzaMuelle2, p1);
+
+	p3 = new Particle({ 0,20,30 }, { 10,0,0 }, 2);
+	p3->setEuler(false);
+	fuerzaMuelleFijo = new FuerzaMuelleFijo(10, 10, { 0,0,0 });
+	registroF->Registrar(fuerzaMuelleFijo, p3);
+	//registroF->Registrar(gravedad, p3);
+
+	fuerzaFlotacion = new FuerzaFlotacion(10, 10, 1, {0,0,30});
+	p4 = new Particle({ 0,20,30 }, { 0,0,0 }, 5);
+	p5 = new Particle({ 30,20,30 }, { 0,0,0 }, 1);
+	p6 = new Particle({ -30,20,30 }, { 0,0,0 }, 10);
+	p4->setEuler(false);
+	p5->setEuler(false);
+	p6->setEuler(false);
+	p4->setColor({ 0.0,0.0,1.0,1.0 });
+	p5->setColor({ 0.0,0.0,1.0,1.0 });
+	p6->setColor({ 0.0,0.0,1.0,1.0 });
+	registroF->Registrar(fuerzaFlotacion, p4);
+	registroF->Registrar(fuerzaFlotacion, p5);
+	registroF->Registrar(fuerzaFlotacion, p6);
+	registroF->Registrar(gravedad, p4);
+	registroF->Registrar(gravedad, p5);
+	registroF->Registrar(gravedad, p6);
+
+	p7 = new Particle({ 30,20,20 }, { 0,0,10 }, 2);
+	p8 = new Particle({ -30,20,20 }, { 0,0,-10 }, 2);
+	p7->setEuler(false);
+	p8->setEuler(false);
+	p7->setColor({ 1.0,1.0,0.0,1.0 });
+	p8->setColor({ 1.0,1.0,0.0,1.0 });
+	fuerzaGomaElastica1 = new FuerzaGomaElastica(10, 10, p7);
+	fuerzaGomaElastica2 = new FuerzaGomaElastica(10, 10, p8);
+	registroF->Registrar(fuerzaGomaElastica1, p8);
+	registroF->Registrar(fuerzaGomaElastica2, p7);
+
+	PxRigidStatic* suelo = gPhysics->createRigidStatic(PxTransform({ 0,0,0 }));
+	PxShape* shape = CreateShape(PxBoxGeometry(100, 0.1, 100));
+	suelo->attachShape(*shape);
+	gScene->addActor(*suelo);
+	RenderItem* item;
+	item = new RenderItem(shape, suelo, { 0.8,0.8,0.8,1.0 });
+
+	SolidoRigido* solidoRigido = new SolidoRigido(gScene, gPhysics, { -70,300,-70 }, 0.5,{0,5,0},{0,0,0},{5,5,5});
+	SolidoRigido* solidoRigido2 = new SolidoRigido(gScene, gPhysics, { -70,100,-70 }, 0.05, { 0,5,0 }, { 0,0,0 }, { 5,5,5 });
+	solidoRigido2->setColor({ 0.0,1.0,0.0,1.0 });
+	SolidoRigido* solidoRigido3 = new SolidoRigido(gScene, gPhysics, { -70,200,-70 }, 0.15, { 0,5,0 }, { 0,0,0 }, { 5,5,5 });
+	solidoRigido3->setColor({ 0.0,0.0,1.0,1.0 });
+
+
+	solidParty = new SolidParty(gScene,gPhysics,{-50,40,-50},100,20);
 	}
 
 
@@ -120,7 +203,16 @@ void stepPhysics(bool interactive, double t)
 	if (muchasParticulas != nullptr) {
 		muchasParticulas->update(t);
 	}
-	
+	p1->integrate(t);
+	p2->integrate(t);
+	p3->integrate(t);
+	p4->integrate(t);
+	p5->integrate(t);
+	p6->integrate(t);
+	p7->integrate(t);
+	p8->integrate(t);
+
+	solidParty->update();
 }
 
 // Function to clean data
@@ -252,6 +344,14 @@ void keyPress(unsigned char key, const PxTransform& camera)
 			delete party;
 			party = nullptr;
 		}
+		break;
+	}
+	case 'K': {
+		double kaux;
+		cin >> kaux;
+
+		fuerzaMuelleFijo->setK(kaux);
+
 		break;
 	}
 	case ' ':
