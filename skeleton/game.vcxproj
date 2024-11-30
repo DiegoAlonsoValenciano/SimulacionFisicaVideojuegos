@@ -275,8 +275,11 @@
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
+    <ClCompile Include="SolidForceGenerator.cpp" />
+    <ClCompile Include="SolidForceRegister.cpp" />
     <ClCompile Include="SolidoRigido.cpp" />
     <ClCompile Include="SolidParty.cpp" />
+    <ClCompile Include="SolidWindForce.cpp" />
     <ClCompile Include="Vector3D.cpp" />
     <ClCompile Include="WindForce.cpp" />
   </ItemGroup>
@@ -303,8 +306,11 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
+    <ClInclude Include="SolidForceGenerator.h" />
+    <ClInclude Include="SolidForceRegister.h" />
     <ClInclude Include="SolidoRigido.h" />
     <ClInclude Include="SolidParty.h" />
+    <ClInclude Include="SolidWindForce.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="WindForce.h" />
   </ItemGroup>

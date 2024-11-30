@@ -31,6 +31,9 @@
     <ClCompile Include="SolidoRigido.cpp" />
     <ClCompile Include="GeneradorSolidoRigido.cpp" />
     <ClCompile Include="SolidParty.cpp" />
+    <ClCompile Include="SolidForceGenerator.cpp" />
+    <ClCompile Include="SolidForceRegister.cpp" />
+    <ClCompile Include="SolidWindForce.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -63,6 +66,9 @@
     <ClInclude Include="SolidoRigido.h" />
     <ClInclude Include="GeneradorSolidoRigido.h" />
     <ClInclude Include="SolidParty.h" />
+    <ClInclude Include="SolidForceGenerator.h" />
+    <ClInclude Include="SolidForceRegister.h" />
+    <ClInclude Include="SolidWindForce.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

@@ -75,6 +75,18 @@ void SolidoRigido::setTiempoVida(float tv) {
 	tiempo = tv;
 }
 
+void SolidoRigido::addForce(Vector3 fuerza) {
+	new_solid->addForce(fuerza);
+}
+
 Vector3 SolidoRigido::GetPos() const {
 	return new_solid->getGlobalPose().p;
+}
+
+Vector3 SolidoRigido::GetVel() const {
+	return new_solid->getLinearVelocity();
+}
+
+double SolidoRigido::GetMasa() const {
+	return new_solid->getMass();
 }

@@ -1,16 +1,19 @@
 #include "SolidParty.h"
 
-SolidParty::SolidParty(PxScene* gScene, PxPhysics* gPhysics, Vector3 fuente, int rango, int limite)
-	:GeneradorSolidoRigido(gScene,gPhysics,fuente,rango,limite)
+SolidParty::SolidParty(PxScene* gScene, PxPhysics* gPhysics, Vector3 fuente, int rango, int limite, SolidForceRegister* r)
+	:GeneradorSolidoRigido(gScene,gPhysics,fuente,rango,limite,r)
 {}
 
 void SolidParty::update() {
 	generateRandom();
 
 	if (lista.size() <= limite) {
-		SolidoRigido* solidoRigido = new SolidoRigido(gScene, gPhysics, {x,y,z}, 1, {xl,yl,zl}, {xa,ya,za}, {2,2,2});
+		SolidoRigido* solidoRigido = new SolidoRigido(gScene, gPhysics, {x,y,z}, 0.1, {xl,yl,zl}, {xa,ya,za}, {1,2,0.2});
 		solidoRigido->setTiempoVida(tv);
 		lista.push_back(solidoRigido);
+		for (auto it = fuerzas.begin(); it != fuerzas.end(); it++) {
+			registro->Registrar((*it), solidoRigido);
+		}
 	}
 	
 
@@ -19,6 +22,7 @@ void SolidParty::update() {
 		(*it)->setColor({ r,g,b,1 });
 		bool dead = (*it)->update();
 		if (dead || ((*it)->GetPos() - fuente).magnitude() > rango) {
+			registro->LiberarSolido((*it));
 			delete(*it);
 			it = lista.erase(it);
 		}

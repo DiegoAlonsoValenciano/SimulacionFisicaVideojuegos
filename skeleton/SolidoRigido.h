@@ -20,7 +20,10 @@ public:
 	bool update();
 	void setColor(Vector4 color);
 	void setTiempoVida(float tv);
+	void addForce(Vector3 fuerza);
 	Vector3 GetPos() const;
+	Vector3 GetVel() const;
+	double GetMasa() const;
 protected:
 	PxScene* gScene;
 	PxPhysics* gPhysics;

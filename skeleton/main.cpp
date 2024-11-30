@@ -31,6 +31,9 @@
 #include "SolidoRigido.h"
 #include "GeneradorSolidoRigido.h"
 #include "SolidParty.h"
+#include "SolidForceGenerator.h"
+#include "SolidForceRegister.h"
+#include "SolidWindForce.h"
 
 #include <map>
 
@@ -69,6 +72,8 @@ FuerzaMuelleFijo* fuerzaMuelleFijo = nullptr;
 FuerzaFlotacion* fuerzaFlotacion = nullptr;
 FuerzaGomaElastica* fuerzaGomaElastica1 = nullptr;
 FuerzaGomaElastica* fuerzaGomaElastica2 = nullptr;
+SolidForceRegister* registroS = nullptr;
+SolidWindForce* vientoS = nullptr;
 
 Particle* p1 = nullptr;
 Particle* p2 = nullptr;
@@ -110,28 +115,30 @@ void initPhysics(bool interactive)
 	viento = new WindForce({ 20,0,20 },{0,0,0},100);
 	torbellino = new FuerzaTorbellino({ 0,0,0 }, 100);
 	explosion = new FuerzaExplosion({ 0,15,0 }, 50);
+	registroS = new SolidForceRegister();
+	vientoS = new SolidWindForce({ 20,0,20 }, { 0,0,0 }, 100);
 
-	p1 = new Particle({ 30,0,20 }, { 0,0,10 }, 2);
-	p2 = new Particle({ -30,0,20 }, { 0,0,-10 }, 2);
-	p1->setEuler(false);
-	p2->setEuler(false);
-	p1->setColor({ 0.0,1.0,0.0,1.0 });
-	p2->setColor({ 0.0,1.0,0.0,1.0 });
-	fuerzaMuelle1 = new FuerzaMuelle(10, 10, p1);
-	fuerzaMuelle2 = new FuerzaMuelle(10, 10, p2);
-	registroF->Registrar(fuerzaMuelle1, p2);
-	registroF->Registrar(fuerzaMuelle2, p1);
+	//p1 = new Particle({ 30,0,20 }, { 0,0,10 }, 2);
+	//p2 = new Particle({ -30,0,20 }, { 0,0,-10 }, 2);
+	//p1->setEuler(false);
+	//p2->setEuler(false);
+	//p1->setColor({ 0.0,1.0,0.0,1.0 });
+	//p2->setColor({ 0.0,1.0,0.0,1.0 });
+	//fuerzaMuelle1 = new FuerzaMuelle(10, 10, p1);
+	//fuerzaMuelle2 = new FuerzaMuelle(10, 10, p2);
+	//registroF->Registrar(fuerzaMuelle1, p2);
+	//registroF->Registrar(fuerzaMuelle2, p1);
 
-	p3 = new Particle({ 0,20,30 }, { 10,0,0 }, 2);
-	p3->setEuler(false);
-	fuerzaMuelleFijo = new FuerzaMuelleFijo(10, 10, { 0,0,0 });
-	registroF->Registrar(fuerzaMuelleFijo, p3);
-	//registroF->Registrar(gravedad, p3);
+	//p3 = new Particle({ 0,20,30 }, { 10,0,0 }, 2);
+	//p3->setEuler(false);
+	//fuerzaMuelleFijo = new FuerzaMuelleFijo(10, 10, { 0,0,0 });
+	//registroF->Registrar(fuerzaMuelleFijo, p3);
+	////registroF->Registrar(gravedad, p3);
 
-	fuerzaFlotacion = new FuerzaFlotacion(10, 10, 1, {0,0,30});
-	p4 = new Particle({ 0,20,30 }, { 0,0,0 }, 5);
-	p5 = new Particle({ 30,20,30 }, { 0,0,0 }, 1);
-	p6 = new Particle({ -30,20,30 }, { 0,0,0 }, 10);
+	/*fuerzaFlotacion = new FuerzaFlotacion(10, 10, 1000, {0,0,30});
+	p6 = new Particle({ -30,20,30 }, { 0,0,0 }, 10000);
+	p4 = new Particle({ 0,20,30 }, { 0,0,0 }, 5000);
+	p5 = new Particle({ 30,20,30 }, { 0,0,0 }, 1000);
 	p4->setEuler(false);
 	p5->setEuler(false);
 	p6->setEuler(false);
@@ -143,18 +150,18 @@ void initPhysics(bool interactive)
 	registroF->Registrar(fuerzaFlotacion, p6);
 	registroF->Registrar(gravedad, p4);
 	registroF->Registrar(gravedad, p5);
-	registroF->Registrar(gravedad, p6);
+	registroF->Registrar(gravedad, p6);*/
 
-	p7 = new Particle({ 30,20,20 }, { 0,0,10 }, 2);
-	p8 = new Particle({ -30,20,20 }, { 0,0,-10 }, 2);
-	p7->setEuler(false);
-	p8->setEuler(false);
-	p7->setColor({ 1.0,1.0,0.0,1.0 });
-	p8->setColor({ 1.0,1.0,0.0,1.0 });
-	fuerzaGomaElastica1 = new FuerzaGomaElastica(10, 10, p7);
-	fuerzaGomaElastica2 = new FuerzaGomaElastica(10, 10, p8);
-	registroF->Registrar(fuerzaGomaElastica1, p8);
-	registroF->Registrar(fuerzaGomaElastica2, p7);
+	//p7 = new Particle({ 30,20,20 }, { 0,0,10 }, 2);
+	//p8 = new Particle({ -30,20,20 }, { 0,0,-10 }, 2);
+	//p7->setEuler(false);
+	//p8->setEuler(false);
+	//p7->setColor({ 1.0,1.0,0.0,1.0 });
+	//p8->setColor({ 1.0,1.0,0.0,1.0 });
+	//fuerzaGomaElastica1 = new FuerzaGomaElastica(10, 10, p7);
+	//fuerzaGomaElastica2 = new FuerzaGomaElastica(10, 10, p8);
+	//registroF->Registrar(fuerzaGomaElastica1, p8);
+	//registroF->Registrar(fuerzaGomaElastica2, p7);
 
 	PxRigidStatic* suelo = gPhysics->createRigidStatic(PxTransform({ 0,0,0 }));
 	PxShape* shape = CreateShape(PxBoxGeometry(100, 0.1, 100));
@@ -170,7 +177,8 @@ void initPhysics(bool interactive)
 	solidoRigido3->setColor({ 0.0,0.0,1.0,1.0 });
 
 
-	solidParty = new SolidParty(gScene,gPhysics,{-50,40,-50},100,20);
+	solidParty = new SolidParty(gScene,gPhysics,{-50,40,-50},100,30,registroS);
+	solidParty->addFuerza(vientoS);
 	}
 
 
@@ -191,6 +199,7 @@ void stepPhysics(bool interactive, double t)
 		}
 	}
 	registroF->update(t);
+	registroS->update();
 	if (lluvia != nullptr) {
 		lluvia->update(t);
 	}
@@ -203,14 +212,14 @@ void stepPhysics(bool interactive, double t)
 	if (muchasParticulas != nullptr) {
 		muchasParticulas->update(t);
 	}
-	p1->integrate(t);
+	/*p1->integrate(t);
 	p2->integrate(t);
 	p3->integrate(t);
 	p4->integrate(t);
 	p5->integrate(t);
 	p6->integrate(t);
 	p7->integrate(t);
-	p8->integrate(t);
+	p8->integrate(t);*/
 
 	solidParty->update();
 }
@@ -273,7 +282,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		if (lluvia == nullptr) {
 			lluvia = new Lluvia({ 0,100,0 }, 10,registroF);
 			lluvia->addFuerza(gravedad);
-			lluvia->addFuerza(torbellino);
+			lluvia->addFuerza(viento);
 		}
 		if (niebla != nullptr) {
 			delete niebla;
