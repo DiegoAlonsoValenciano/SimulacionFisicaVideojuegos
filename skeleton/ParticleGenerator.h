@@ -16,6 +16,8 @@ public:
 	virtual void update(double t) = 0;
 	void addFuerza(ForceGenerator* f);
 	void quitarFuerza(ForceGenerator* f);
+	void setColor(Vector4 c);
+	void setTam(float t);
 protected:
 	Vector3 fuente;
 	list<Particle*> lista;
@@ -28,5 +30,7 @@ protected:
 	virtual void generateRandom() = 0;
 	list<ForceGenerator*> fuerzas;
 	ParticleForceRegister* registro;
+	Vector4 color;
+	float tam;
 };
 

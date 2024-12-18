@@ -52,6 +52,19 @@ SolidoRigido::SolidoRigido(PxScene* gScene, PxPhysics* gPhysics, Vector3 pos, do
 	dynamic_item = new RenderItem(shape_ad, new_solid, { 1.0,0.0,0.0,1.0 });
 }
 
+SolidoRigido::SolidoRigido(PxScene* gScene, PxPhysics* gPhysics, Vector3 pos, double d, Vector3 velLin, Vector3 velAng, float tamesf)
+	:gScene(gScene), gPhysics(gPhysics), tiempoVida(0), tiempo(5000)
+{
+	new_solid = gPhysics->createRigidDynamic(PxTransform(pos));
+	new_solid->setLinearVelocity(velLin);
+	new_solid->setAngularVelocity(velAng);
+	shape_ad = CreateShape(PxSphereGeometry(tamesf));
+	new_solid->attachShape(*shape_ad);
+	PxRigidBodyExt::updateMassAndInertia(*new_solid, d);
+	gScene->addActor(*new_solid);
+	dynamic_item = new RenderItem(shape_ad, new_solid, { 1.0,0.0,0.0,1.0 });
+}
+
 SolidoRigido::~SolidoRigido() {
 	gScene->removeActor(*new_solid);
 	DeregisterRenderItem(dynamic_item);
@@ -59,7 +72,7 @@ SolidoRigido::~SolidoRigido() {
 
 bool SolidoRigido::update() {
 	tiempoVida++;
-	if (tiempoVida > tiempo) {
+	if (tiempoVida > tiempo || matar) {
 		return true;
 	}
 	else {
@@ -89,4 +102,20 @@ Vector3 SolidoRigido::GetVel() const {
 
 double SolidoRigido::GetMasa() const {
 	return new_solid->getMass();
+}
+
+void SolidoRigido::setName(const char* nombre) {
+	new_solid->setName(nombre);
+}
+
+void SolidoRigido::Matar() {
+	matar = true;
+}
+
+PxRigidDynamic* SolidoRigido::getActor() {
+	return new_solid;
+}
+
+void SolidoRigido::setTensorInercia(Vector3 TI) {
+	new_solid->setMassSpaceInertiaTensor(TI);
 }

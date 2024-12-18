@@ -34,6 +34,11 @@
     <ClCompile Include="SolidForceGenerator.cpp" />
     <ClCompile Include="SolidForceRegister.cpp" />
     <ClCompile Include="SolidWindForce.cpp" />
+    <ClCompile Include="GenerarBala.cpp" />
+    <ClCompile Include="ConejoAlien.cpp" />
+    <ClCompile Include="SolidSeguirForce.cpp" />
+    <ClCompile Include="SolidFuerzaMuelleFijo.cpp" />
+    <ClCompile Include="GenerarEnemigo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -69,6 +74,11 @@
     <ClInclude Include="SolidForceGenerator.h" />
     <ClInclude Include="SolidForceRegister.h" />
     <ClInclude Include="SolidWindForce.h" />
+    <ClInclude Include="GenerarBala.h" />
+    <ClInclude Include="ConejoAlien.h" />
+    <ClInclude Include="SolidSeguirForce.h" />
+    <ClInclude Include="SolidFuerzaMuelleFijo.h" />
+    <ClInclude Include="GenerarEnemigo.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

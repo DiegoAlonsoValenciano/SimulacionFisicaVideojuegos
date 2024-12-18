@@ -16,6 +16,7 @@ public:
 	virtual void update() = 0;
 	void addFuerza(SolidForceGenerator* f);
 	void quitarFuerza(SolidForceGenerator* f);
+	void destruir(physx::PxActor* actor);
 protected:
 	PxScene* gScene;
 	PxPhysics* gPhysics;

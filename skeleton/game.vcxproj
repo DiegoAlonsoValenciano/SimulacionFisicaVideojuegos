@@ -254,6 +254,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
+    <ClCompile Include="ConejoAlien.cpp" />
     <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="FuerzaExplosion.cpp" />
     <ClCompile Include="FuerzaGomaElastica.cpp" />
@@ -263,6 +264,8 @@
     <ClCompile Include="FuerzaTorbellino.cpp" />
     <ClCompile Include="FuerzaFlotacion.cpp" />
     <ClCompile Include="GeneradorSolidoRigido.cpp" />
+    <ClCompile Include="GenerarBala.cpp" />
+    <ClCompile Include="GenerarEnemigo.cpp" />
     <ClCompile Include="Lluvia.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MuchasParticulas.cpp" />
@@ -277,14 +280,17 @@
     <ClCompile Include="Render\Render.cpp" />
     <ClCompile Include="SolidForceGenerator.cpp" />
     <ClCompile Include="SolidForceRegister.cpp" />
+    <ClCompile Include="SolidFuerzaMuelleFijo.cpp" />
     <ClCompile Include="SolidoRigido.cpp" />
     <ClCompile Include="SolidParty.cpp" />
+    <ClCompile Include="SolidSeguirForce.cpp" />
     <ClCompile Include="SolidWindForce.cpp" />
     <ClCompile Include="Vector3D.cpp" />
     <ClCompile Include="WindForce.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks.hpp" />
+    <ClInclude Include="ConejoAlien.h" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="ForceGenerator.h" />
     <ClInclude Include="FuerzaExplosion.h" />
@@ -295,6 +301,8 @@
     <ClInclude Include="FuerzaTorbellino.h" />
     <ClInclude Include="FuerzaFlotacion.h" />
     <ClInclude Include="GeneradorSolidoRigido.h" />
+    <ClInclude Include="GenerarBala.h" />
+    <ClInclude Include="GenerarEnemigo.h" />
     <ClInclude Include="Lluvia.h" />
     <ClInclude Include="MuchasParticulas.h" />
     <ClInclude Include="Niebla.h" />
@@ -308,8 +316,10 @@
     <ClInclude Include="Render\Render.h" />
     <ClInclude Include="SolidForceGenerator.h" />
     <ClInclude Include="SolidForceRegister.h" />
+    <ClInclude Include="SolidFuerzaMuelleFijo.h" />
     <ClInclude Include="SolidoRigido.h" />
     <ClInclude Include="SolidParty.h" />
+    <ClInclude Include="SolidSeguirForce.h" />
     <ClInclude Include="SolidWindForce.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="WindForce.h" />

@@ -28,3 +28,11 @@ void GeneradorSolidoRigido::quitarFuerza(SolidForceGenerator* f) {
 		}
 	}
 }
+
+void GeneradorSolidoRigido::destruir(physx::PxActor* actor) {
+	for (auto it = lista.begin(); it != lista.end(); it++) {
+		if ((*it)->getActor() == actor) {
+			(*it)->Matar();
+		}
+	}
+}

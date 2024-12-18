@@ -34,6 +34,11 @@
 #include "SolidForceGenerator.h"
 #include "SolidForceRegister.h"
 #include "SolidWindForce.h"
+#include "GenerarBala.h"
+#include "ConejoAlien.h"
+#include "SolidSeguirForce.h"
+#include "SolidFuerzaMuelleFijo.h"
+#include "GenerarEnemigo.h"
 
 #include <map>
 
@@ -56,35 +61,34 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-Proyectil* proyectil = nullptr;
 Lluvia* lluvia = nullptr;
-Niebla* niebla = nullptr;
-Party* party = nullptr;
 ParticleForceRegister* registroF = nullptr;
 FuerzaGravedad* gravedad = nullptr;
 WindForce* viento = nullptr;
-FuerzaTorbellino* torbellino = nullptr;
-FuerzaExplosion* explosion = nullptr;
-MuchasParticulas* muchasParticulas = nullptr;
-FuerzaMuelle* fuerzaMuelle1 = nullptr;
-FuerzaMuelle* fuerzaMuelle2 = nullptr;
-FuerzaMuelleFijo* fuerzaMuelleFijo = nullptr;
-FuerzaFlotacion* fuerzaFlotacion = nullptr;
-FuerzaGomaElastica* fuerzaGomaElastica1 = nullptr;
-FuerzaGomaElastica* fuerzaGomaElastica2 = nullptr;
 SolidForceRegister* registroS = nullptr;
-SolidWindForce* vientoS = nullptr;
+Lluvia* lluvia2 = nullptr;
 
-Particle* p1 = nullptr;
-Particle* p2 = nullptr;
-Particle* p3 = nullptr;
-Particle* p4 = nullptr;
-Particle* p5 = nullptr;
-Particle* p6 = nullptr;
-Particle* p7 = nullptr;
-Particle* p8 = nullptr;
-
-SolidParty* solidParty;
+PxRigidStatic* suelo;
+RenderItem* item;
+PxRigidStatic* muro1;
+RenderItem* item1;
+PxRigidStatic* muro2;
+RenderItem* item2;
+PxRigidStatic* muro3;
+RenderItem* item3;
+PxRigidStatic* muro4;
+RenderItem* item4;
+ConejoAlien* conejoAlien = nullptr;
+SolidSeguirForce* solidSeguirForce = nullptr;
+SolidFuerzaMuelleFijo* solidFuerzaMuelleFijo1 = nullptr;
+SolidFuerzaMuelleFijo* solidFuerzaMuelleFijo2 = nullptr;
+SolidFuerzaMuelleFijo* solidFuerzaMuelleFijo3 = nullptr;
+SolidFuerzaMuelleFijo* solidFuerzaMuelleFijo4 = nullptr;
+SolidoRigido* enemigoP1 = nullptr;
+SolidoRigido* enemigoP2 = nullptr;
+SolidoRigido* enemigoP3 = nullptr;
+SolidoRigido* enemigoP4 = nullptr;
+GenerarEnemigo* generarEnemigo = nullptr;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -112,75 +116,83 @@ void initPhysics(bool interactive)
 
 	registroF = new ParticleForceRegister();
 	gravedad = new FuerzaGravedad();
-	viento = new WindForce({ 20,0,20 },{0,0,0},100);
-	torbellino = new FuerzaTorbellino({ 0,0,0 }, 100);
-	explosion = new FuerzaExplosion({ 0,15,0 }, 50);
+	viento = new WindForce({ 20,0,20 }, { 0,0,0 }, 400);
 	registroS = new SolidForceRegister();
-	vientoS = new SolidWindForce({ 20,0,20 }, { 0,0,0 }, 100);
 
-	//p1 = new Particle({ 30,0,20 }, { 0,0,10 }, 2);
-	//p2 = new Particle({ -30,0,20 }, { 0,0,-10 }, 2);
-	//p1->setEuler(false);
-	//p2->setEuler(false);
-	//p1->setColor({ 0.0,1.0,0.0,1.0 });
-	//p2->setColor({ 0.0,1.0,0.0,1.0 });
-	//fuerzaMuelle1 = new FuerzaMuelle(10, 10, p1);
-	//fuerzaMuelle2 = new FuerzaMuelle(10, 10, p2);
-	//registroF->Registrar(fuerzaMuelle1, p2);
-	//registroF->Registrar(fuerzaMuelle2, p1);
-
-	//p3 = new Particle({ 0,20,30 }, { 10,0,0 }, 2);
-	//p3->setEuler(false);
-	//fuerzaMuelleFijo = new FuerzaMuelleFijo(10, 10, { 0,0,0 });
-	//registroF->Registrar(fuerzaMuelleFijo, p3);
-	////registroF->Registrar(gravedad, p3);
-
-	/*fuerzaFlotacion = new FuerzaFlotacion(10, 10, 1000, {0,0,30});
-	p6 = new Particle({ -30,20,30 }, { 0,0,0 }, 10000);
-	p4 = new Particle({ 0,20,30 }, { 0,0,0 }, 5000);
-	p5 = new Particle({ 30,20,30 }, { 0,0,0 }, 1000);
-	p4->setEuler(false);
-	p5->setEuler(false);
-	p6->setEuler(false);
-	p4->setColor({ 0.0,0.0,1.0,1.0 });
-	p5->setColor({ 0.0,0.0,1.0,1.0 });
-	p6->setColor({ 0.0,0.0,1.0,1.0 });
-	registroF->Registrar(fuerzaFlotacion, p4);
-	registroF->Registrar(fuerzaFlotacion, p5);
-	registroF->Registrar(fuerzaFlotacion, p6);
-	registroF->Registrar(gravedad, p4);
-	registroF->Registrar(gravedad, p5);
-	registroF->Registrar(gravedad, p6);*/
-
-	//p7 = new Particle({ 30,20,20 }, { 0,0,10 }, 2);
-	//p8 = new Particle({ -30,20,20 }, { 0,0,-10 }, 2);
-	//p7->setEuler(false);
-	//p8->setEuler(false);
-	//p7->setColor({ 1.0,1.0,0.0,1.0 });
-	//p8->setColor({ 1.0,1.0,0.0,1.0 });
-	//fuerzaGomaElastica1 = new FuerzaGomaElastica(10, 10, p7);
-	//fuerzaGomaElastica2 = new FuerzaGomaElastica(10, 10, p8);
-	//registroF->Registrar(fuerzaGomaElastica1, p8);
-	//registroF->Registrar(fuerzaGomaElastica2, p7);
-
-	PxRigidStatic* suelo = gPhysics->createRigidStatic(PxTransform({ 0,0,0 }));
-	PxShape* shape = CreateShape(PxBoxGeometry(100, 0.1, 100));
+	suelo = gPhysics->createRigidStatic(PxTransform({ 0,0,0 }));
+	PxShape* shape = CreateShape(PxBoxGeometry(200, 0.1, 200));
 	suelo->attachShape(*shape);
 	gScene->addActor(*suelo);
-	RenderItem* item;
 	item = new RenderItem(shape, suelo, { 0.8,0.8,0.8,1.0 });
 
-	SolidoRigido* solidoRigido = new SolidoRigido(gScene, gPhysics, { -70,300,-70 }, 0.5,{0,5,0},{0,0,0},{5,5,5});
-	SolidoRigido* solidoRigido2 = new SolidoRigido(gScene, gPhysics, { -70,100,-70 }, 0.05, { 0,5,0 }, { 0,0,0 }, { 5,5,5 });
-	solidoRigido2->setColor({ 0.0,1.0,0.0,1.0 });
-	SolidoRigido* solidoRigido3 = new SolidoRigido(gScene, gPhysics, { -70,200,-70 }, 0.15, { 0,5,0 }, { 0,0,0 }, { 5,5,5 });
-	solidoRigido3->setColor({ 0.0,0.0,1.0,1.0 });
+	muro1 = gPhysics->createRigidStatic(PxTransform({ 0,5,-200 }));
+	PxShape* shape1 = CreateShape(PxBoxGeometry(200, 5, 10));
+	muro1->attachShape(*shape1);
+	gScene->addActor(*muro1);
+	item1 = new RenderItem(shape1, muro1, { 0.1,0.1,0.1,1.0 });
 
+	muro2 = gPhysics->createRigidStatic(PxTransform({ -200,5,0 }));
+	PxShape* shape2 = CreateShape(PxBoxGeometry(10, 5, 200));
+	muro2->attachShape(*shape2);
+	gScene->addActor(*muro2);
+	item2 = new RenderItem(shape2, muro2, { 0.1,0.1,0.1,1.0 });
 
-	solidParty = new SolidParty(gScene,gPhysics,{-50,40,-50},100,30,registroS);
-	solidParty->addFuerza(vientoS);
+	muro3 = gPhysics->createRigidStatic(PxTransform({ 0,5,200 }));
+	PxShape* shape3 = CreateShape(PxBoxGeometry(200, 5, 10));
+	muro3->attachShape(*shape3);
+	gScene->addActor(*muro3);
+	item3 = new RenderItem(shape3, muro3, { 0.1,0.1,0.1,1.0 });
+
+	muro4 = gPhysics->createRigidStatic(PxTransform({ 200,5,0 }));
+	PxShape* shape4 = CreateShape(PxBoxGeometry(10, 5, 200));
+	muro4->attachShape(*shape4);
+	gScene->addActor(*muro4);
+	item4 = new RenderItem(shape4, muro4, { 0.1,0.1,0.1,1.0 });
+
+	conejoAlien = new ConejoAlien(gScene, gPhysics, { 0,0,0 }, registroS);
+
+	lluvia = new Lluvia({ 0,100,0 }, 1, registroF,1);
+	lluvia->setColor({ 0.0,1.0,0.0,1.0 });
+	lluvia->addFuerza(gravedad);
+	lluvia2 = new Lluvia({ 0,-7,0 }, 100, registroF,0.5);
+	lluvia2->setColor({ 0.5,0.5,0.5,1.0 });
+	lluvia2->setTam(10.0);
+	lluvia2->addFuerza(viento);
+
+	solidSeguirForce = new SolidSeguirForce(5000, conejoAlien);
+	float I = (1 / 12) * 0.1 * (pow(5, 2) + pow(5, 2));
+	enemigoP1 = new SolidoRigido(gScene, gPhysics, { -180,10,-180 }, 0.1, { 0,0,0 }, { 0,0,0 }, { 5,5,5 });
+	enemigoP1->setName("enemigo");
+	enemigoP1->setTiempoVida(1000000);
+	enemigoP1->setTensorInercia({ I,I,I });
+	enemigoP2 = new SolidoRigido(gScene, gPhysics, { -180,10,180 }, 0.1, { 0,0,0 }, { 0,0,0 }, { 5,5,5 });
+	enemigoP2->setName("enemigo");
+	enemigoP2->setTiempoVida(1000000);
+	enemigoP2->setTensorInercia({ I,I,I });
+	enemigoP3 = new SolidoRigido(gScene, gPhysics, { 180,10,180 }, 0.1, { 0,0,0 }, { 0,0,0 }, { 5,5,5 });
+	enemigoP3->setName("enemigo");
+	enemigoP3->setTiempoVida(1000000);
+	enemigoP3->setTensorInercia({ I,I,I });
+	enemigoP4 = new SolidoRigido(gScene, gPhysics, { 180,10,-180 }, 0.1, { 0,0,0 }, { 0,0,0 }, { 5,5,5 });
+	enemigoP4->setName("enemigo");
+	enemigoP4->setTiempoVida(1000000);
+	enemigoP4->setTensorInercia({ I,I,I });
+	solidFuerzaMuelleFijo1 = new SolidFuerzaMuelleFijo(1000, 100, { -200,10,-200 });
+	solidFuerzaMuelleFijo2 = new SolidFuerzaMuelleFijo(1000, 100, { -200,10,200 });
+	solidFuerzaMuelleFijo3 = new SolidFuerzaMuelleFijo(1000, 100, { 200,10,200 });
+	solidFuerzaMuelleFijo4 = new SolidFuerzaMuelleFijo(1000, 100, { 200,10,-200 });
+	registroS->Registrar(solidSeguirForce, enemigoP1);
+	registroS->Registrar(solidSeguirForce, enemigoP2);
+	registroS->Registrar(solidSeguirForce, enemigoP3);
+	registroS->Registrar(solidSeguirForce, enemigoP4);
+	registroS->Registrar(solidFuerzaMuelleFijo1, enemigoP1);
+	registroS->Registrar(solidFuerzaMuelleFijo2, enemigoP2);
+	registroS->Registrar(solidFuerzaMuelleFijo3, enemigoP3);
+	registroS->Registrar(solidFuerzaMuelleFijo4, enemigoP4);
+	generarEnemigo = new GenerarEnemigo(gScene, gPhysics, { 0,0,0 }, 200, 3, registroS);
+	generarEnemigo->addFuerza(solidSeguirForce);
+	//SolidoRigido* solidoRigido4 = new SolidoRigido(gScene, gPhysics, { 0,10,-30 }, 1, { 0,0,0 }, { 0,0,0 }, { 5,5,5 });
 	}
-
 
 // Function to configure what happens in each step of physics
 // interactive: true if the game is rendering, false if it offline
@@ -191,65 +203,58 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	if (proyectil != nullptr) {
-		proyectil->integrate(t);
-		if (proyectil->GetPos().y < 0) {
-			delete proyectil;
-			proyectil = nullptr;
-		}
-	}
+
 	registroF->update(t);
 	registroS->update();
 	if (lluvia != nullptr) {
 		lluvia->update(t);
 	}
-	if (niebla != nullptr) {
-		niebla->update(t);
-	}
-	if (party != nullptr) {
-		party->update(t);
-	}
-	if (muchasParticulas != nullptr) {
-		muchasParticulas->update(t);
-	}
-	/*p1->integrate(t);
-	p2->integrate(t);
-	p3->integrate(t);
-	p4->integrate(t);
-	p5->integrate(t);
-	p6->integrate(t);
-	p7->integrate(t);
-	p8->integrate(t);*/
 
-	solidParty->update();
+	if (conejoAlien != nullptr) {
+		conejoAlien->update();
+	}
+
+	lluvia2->update(t);
+	generarEnemigo->update();
+
+	if (enemigoP1 != nullptr) {
+		if (enemigoP1->update()) {
+			registroS->LiberarSolido(enemigoP1);
+			delete enemigoP1;
+			enemigoP1 = nullptr;
+		}
+	}
+	if (enemigoP2 != nullptr) {
+		if (enemigoP2->update()) {
+			registroS->LiberarSolido(enemigoP2);
+			delete enemigoP2;
+			enemigoP2 = nullptr;
+		}
+	}
+	if (enemigoP3 != nullptr) {
+		if (enemigoP3->update()) {
+			registroS->LiberarSolido(enemigoP3);
+			delete enemigoP3;
+			enemigoP3 = nullptr;
+		}
+	}
+	if (enemigoP4 != nullptr) {
+		if (enemigoP4->update()) {
+			registroS->LiberarSolido(enemigoP4);
+			delete enemigoP4;
+			enemigoP4 = nullptr;
+		}
+	}
+	
 }
+
+
 
 // Function to clean data
 // Add custom code to the begining of the function
 void cleanupPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
-	
-	if (proyectil != nullptr) {
-		delete proyectil;
-		proyectil = nullptr;
-	}
-	if (lluvia != nullptr) {
-		delete lluvia;
-		lluvia = nullptr;
-	}
-	if (niebla != nullptr) {
-		delete niebla;
-		niebla = nullptr;
-	}
-	if (party != nullptr) {
-		delete party;
-		party = nullptr;
-	}
-	if (muchasParticulas != nullptr) {
-		delete muchasParticulas;
-		muchasParticulas = nullptr;
-	}
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
 	gScene->release();
@@ -272,99 +277,39 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 	//case 'B': break;
 	//case ' ':	break;
-	case 'B': {
-		if (proyectil == nullptr) {
-			proyectil = new Proyectil(camera.p, {-10,0,-10}, 10);
-		}
-		break;
-	}
-	case 'L': {
-		if (lluvia == nullptr) {
-			lluvia = new Lluvia({ 0,100,0 }, 10,registroF);
-			lluvia->addFuerza(gravedad);
-			lluvia->addFuerza(viento);
-		}
-		if (niebla != nullptr) {
-			delete niebla;
-			niebla = nullptr;
-		}
-		if (party != nullptr) {
-			delete party;
-			party = nullptr;
-		}
-		if (muchasParticulas != nullptr) {
-			delete muchasParticulas;
-			muchasParticulas = nullptr;
-		}
-		break;
-	}
-	case 'N': {
-		if (niebla == nullptr) {
-			niebla = new Niebla({ 0,50,0 }, 10,registroF);
-			niebla->addFuerza(torbellino);
-		}
-		if (lluvia != nullptr) {
-			delete lluvia;
-			lluvia = nullptr;
-		}
-		if (party != nullptr) {
-			delete party;
-			party = nullptr;
-		}
-		if (muchasParticulas != nullptr) {
-			delete muchasParticulas;
-			muchasParticulas = nullptr;
-		}
-		break;
-	}
-	case 'P': {
-		if (party == nullptr) {
-			party = new Party({ 0,0,0 }, 100,registroF);
-		}
-		if (lluvia != nullptr) {
-			delete lluvia;
-			lluvia = nullptr;
-		}
-		if (niebla != nullptr) {
-			delete niebla;
-			niebla = nullptr;
-		}
-		if (muchasParticulas != nullptr) {
-			delete muchasParticulas;
-			muchasParticulas = nullptr;
-		}
-		break;
-	}
-	case 'E': {
-		if (muchasParticulas == nullptr) {
-			explosion = new FuerzaExplosion({ 0,15,0 }, 50);
-			muchasParticulas = new MuchasParticulas({ 0,15,0 }, 100, registroF);
-			muchasParticulas->addFuerza(explosion);
-		}
-		if (lluvia != nullptr) {
-			delete lluvia;
-			lluvia = nullptr;
-		}
-		if (niebla != nullptr) {
-			delete niebla;
-			niebla = nullptr;
-		}
-		if (party != nullptr) {
-			delete party;
-			party = nullptr;
-		}
-		break;
-	}
-	case 'K': {
-		double kaux;
-		cin >> kaux;
+	case 'T':
+	{
 
-		fuerzaMuelleFijo->setK(kaux);
+		conejoAlien->salto({ 0,0,-1 });
+		
+		break;
+	}
+	case 'G':
+	{
 
+		conejoAlien->salto({ 0,0,1 });
+
+		break;
+	}
+	case 'F':
+	{
+
+		conejoAlien->salto({ -1,0,0 });
+		
+		break;
+	}
+	case 'H':
+	{
+
+		conejoAlien->salto({ 1,0,0 });
+		
 		break;
 	}
 	case ' ':
 	{
+
+		conejoAlien->disparar();
+		
 		break;
 	}
 	default:
@@ -376,6 +321,63 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 {
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);
+
+	if (actor1->getName() == "conejo" && actor2->getName() == "enemigo") {
+		//cout << "colision conejo enemigo\n";
+		conejoAlien->Matar();
+	}
+	else if (actor1->getName() == "enemigo" && actor2->getName() == "conejo") {
+		//cout << "colision enemigo conejo\n";
+		conejoAlien->Matar();
+	}
+	else if (actor1->getName() == "enemigo" && actor2->getName() == "bala") {
+		//cout << "colision enemigo bala\n";
+		generarEnemigo->destruir(actor1);
+		if (enemigoP1 != nullptr) {
+			if (actor1 == enemigoP1->getActor()) {
+				enemigoP1->Matar();
+			}
+		}
+		if (enemigoP2 != nullptr) {
+			if (actor1 == enemigoP2->getActor()) {
+				enemigoP2->Matar();
+			}
+		}
+		if (enemigoP3 != nullptr) {
+			if (actor1 == enemigoP3->getActor()) {
+				enemigoP3->Matar();
+			}
+		}
+		if (enemigoP4 != nullptr) {
+			if (actor1 == enemigoP4->getActor()) {
+				enemigoP4->Matar();
+			}
+		}
+	}
+	else if (actor1->getName() == "bala" && actor2->getName() == "enemigo") {
+		//cout << "colision bala enemigo\n";
+		generarEnemigo->destruir(actor2);
+		if (enemigoP1 != nullptr) {
+			if (actor2 == enemigoP1->getActor()) {
+				enemigoP1->Matar();
+			}
+		}
+		if (enemigoP2 != nullptr) {
+			if (actor2 == enemigoP2->getActor()) {
+				enemigoP2->Matar();
+			}
+		}
+		if (enemigoP3 != nullptr) {
+			if (actor2 == enemigoP3->getActor()) {
+				enemigoP3->Matar();
+			}
+		}
+		if (enemigoP4 != nullptr) {
+			if (actor2 == enemigoP4->getActor()) {
+				enemigoP4->Matar();
+			}
+		}
+	}
 }
 
 

@@ -29,3 +29,12 @@ void ParticleGenerator::quitarFuerza(ForceGenerator* f) {
 		}
 	}
 }
+
+void ParticleGenerator::setColor(Vector4 c) {
+	color = c;
+}
+
+
+void ParticleGenerator::setTam(float t) {
+	tam = t;
+}
